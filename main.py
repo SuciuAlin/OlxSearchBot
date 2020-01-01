@@ -4,10 +4,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
 
 
 class InstaBot:
     def __init__(self, filename, storagefile, config):
+        CHROME_PAtH = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+        CHROMEDRIVER_PATH = 'C:\Windows\chromedriver.exe'
         self.driver = webdriver.Chrome()
         # e nevoie de pret minim si pret maxim pentru a sorta dupa
         self.driver.get("https://www.olx.ro/"
@@ -21,7 +24,7 @@ class InstaBot:
         self.__storagefile = storagefile
 
     def laptopQuery(self):
-
+        sleep(1)
         self.driver.find_element_by_xpath("//input[@id='search-text']") \
             .send_keys(self.__searchedItem)
         sleep(1)
@@ -41,17 +44,19 @@ class InstaBot:
         self.driver.find_element_by_xpath("//input[@id='search-submit']") \
             .click()
 
-    def __createListWithResultedTr(self,n):
+    def __createListWithResultedTr(self, n):
         list = []
         missing = 0
         i = 0
-        while i < n + missing:
+        while i < n + missing and i < 45:
             try:
                 list.append(self.__returnPriceElement(i))
                 list[-1] = i
+                print(i)
             except:
                 missing += 1
             i += 1
+
         return list
 
     def __returnPriceElement(self, i):
@@ -112,32 +117,33 @@ class InstaBot:
         and will try to access an inexisting ones
         '''
         pricesList = self.__returnPriceElementList(n)
-        for i in range(0, n):
+        for i in range(0, len(pricesList)):
             sum = self.__priceFormatToInt(pricesList[i])
             if sum > int(self.__priceTo) or sum < int(self.__priceFrom):
                 return False
         return True
 
-    def __writeTheItemsInFile(self, elemsHref,trUsed):
+    def __writeTheItemsInFile(self, elemsHref, trUsed):
         file = open(self.__filename, 'w')
-        numberOfItems = len(elemsHref)
+        numberOfItems = min(40, len(elemsHref))
         file.write("<html><head><title>OlxOffers</title></head><body><table border='yes'>")
         storagefile = open(self.__storagefile, 'w')
-        for i in range(0, min(3,numberOfItems)):
+        for i in range(0, min(3, numberOfItems)):
             storagefile.write(self.__returnHrefElement(trUsed[i]).get_attribute("href").split('#')[0])
             storagefile.write('\n')
         storagefile.close()
-        for i in range(0, numberOfItems):
+        for i in range(0, min(39, numberOfItems)):
             file.write("<tr>\n\n<td>")
+            print(i)
             file.write(self.__returnPriceElement(trUsed[i]).text)
             file.write("</td>\n<td>")
             file.write(self.__returnLocationElement(trUsed[i]).text)
             file.write("</td>\n<td>")
             file.write(self.__returnDateElement(trUsed[i]).text)
-            file.write("</td>\n<td><a href=" + self.__returnHrefElement(trUsed[i]).get_attribute("href") .split('#')[0]+ ">\n")
-            file.write(self.__returnHrefElement(trUsed[i]).text)
+            file.write("</td>\n<td><a href=" + self.__returnHrefElement(trUsed[i]).get_attribute("href") .split('#')[0] + ">\n")
+            file.write(self.__returnHrefElement(trUsed[i]).get_attribute("href") .split('#')[0])
             file.write("\n</a></td></tr>")
-        file.write("\n</table></html>")
+        file.write("\n</table></body></html>")
         file.close()
 
     '''deprecated
@@ -155,12 +161,10 @@ class InstaBot:
         f.close()
         return lines
 
-    def __returnTrueIfNewItemsAppear(self,elemsHref,trUsed,numberOfItems):
+    def __returnTrueIfNewItemsAppear(self, elemsHref, trUsed, numberOfItems):
         lines = self.__readTheLastThreeAndReturnList()
-
-
         #daca sunt la fel de multe se verifica conditia de aparitie
-        n = min(numberOfItems, len(elemsHref))
+        n = min(numberOfItems, len(elemsHref), len(lines))
         newItems = []
         oldItems = []
         for i in range(0, n):
@@ -177,26 +181,29 @@ class InstaBot:
 
     def __writeNoItemsInFile(self):
         file = open(self.__filename, 'w')
+        file.write("<html><head><title>OlxOffers</title></head><body><table border='yes'>")
         file.write("<tr><td>")
         file.write("Nu sunt elemente!")  # no elements found
         file.write("</td></tr>")
-        file.write("</table></html>")
+        file.write("</table></body></html>")
         file.close()
 
     def createWebpage(self):
         sleep(3)
         elemsHref = self.__returnHrefElementList()
-        numberOfItems = len(elemsHref)
+        print(len(elemsHref))
+        numberOfItems = min(len(elemsHref), 40) #maximum number of elements on a page
         trUsed = self.__createListWithResultedTr(numberOfItems)
-
         try:
-            self.__verifyTheExistenceOfItems(numberOfItems)
-            if self.__returnTrueIfNewItemsAppear(elemsHref, trUsed, 3):
+            self.__verifyTheExistenceOfItems(numberOfItems )
+            print("intra5")
+            if self.__returnTrueIfNewItemsAppear(elemsHref, trUsed, 3) and numberOfItems >0:
 
                 print("e diferita lista")
                 self.__writeTheItemsInFile(elemsHref, trUsed)
             else:
                 print("e identica lista")
+                self.__writeNoItemsInFile()
         except NoSuchElementException:
             self.__writeNoItemsInFile()
 
@@ -226,6 +233,7 @@ def dataFromConfig():
     f.close()
 
     return dictionary
+
 
 storagefile = "storage.txt"
 fileName = "olxSearched.html"
