@@ -9,12 +9,9 @@ from selenium.webdriver.chrome.options import Options
 
 class InstaBot:
     def __init__(self, filename, storagefile, config):
-        CHROME_PAtH = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
-        CHROMEDRIVER_PATH = 'C:\Windows\chromedriver.exe'
         self.__options = Options()
         self.__options.add_argument("--headless")
         self.driver = webdriver.Chrome(
-            executable_path= "C:\Windows\chromedriver.exe",
             options=self.__options)
         # e nevoie de pret minim si pret maxim pentru a sorta dupa
         self.driver.get("https://www.olx.ro/"

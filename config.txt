@@ -6,5 +6,5 @@ searchedItem = dell xps
 priceFrom = 2000
 priceTo = 30000
 currency = RON
-
+chromedriverpath = C:\Windows\chromedriver.exe
 //*[@id="offers_table"]/tbody/tr[44]/td/div/table/tbody/tr[1]/td[2]/div/h3/a
