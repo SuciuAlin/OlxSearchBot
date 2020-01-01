@@ -52,7 +52,6 @@ class InstaBot:
             try:
                 list.append(self.__returnPriceElement(i))
                 list[-1] = i
-                print(i)
             except:
                 missing += 1
             i += 1
@@ -82,7 +81,6 @@ class InstaBot:
         there are missing random columns in results for randomness
         but always starts with 4
         '''
-        #print(n)
         list = self.__createListWithResultedTr(n)
         elementList = []
         for i in range(0, len(list)):
@@ -191,19 +189,16 @@ class InstaBot:
     def createWebpage(self):
         sleep(3)
         elemsHref = self.__returnHrefElementList()
-        print(len(elemsHref))
         numberOfItems = min(len(elemsHref), 40) #maximum number of elements on a page
         trUsed = self.__createListWithResultedTr(numberOfItems)
         try:
             self.__verifyTheExistenceOfItems(numberOfItems )
-            print("intra5")
             if self.__returnTrueIfNewItemsAppear(elemsHref, trUsed, 3) and numberOfItems >0:
 
                 print("e diferita lista")
                 self.__writeTheItemsInFile(elemsHref, trUsed)
             else:
                 print("e identica lista")
-                self.__writeNoItemsInFile()
         except NoSuchElementException:
             self.__writeNoItemsInFile()
 
