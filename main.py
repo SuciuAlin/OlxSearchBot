@@ -11,7 +11,11 @@ class InstaBot:
     def __init__(self, filename, storagefile, config):
         CHROME_PAtH = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
         CHROMEDRIVER_PATH = 'C:\Windows\chromedriver.exe'
-        self.driver = webdriver.Chrome()
+        self.__options = Options()
+        self.__options.add_argument("--headless")
+        self.driver = webdriver.Chrome(
+            executable_path= "C:\Windows\chromedriver.exe",
+            options=self.__options)
         # e nevoie de pret minim si pret maxim pentru a sorta dupa
         self.driver.get("https://www.olx.ro/"
                         + config["category"]
@@ -132,7 +136,6 @@ class InstaBot:
         storagefile.close()
         for i in range(0, min(39, numberOfItems)):
             file.write("<tr>\n\n<td>")
-            print(i)
             file.write(self.__returnPriceElement(trUsed[i]).text)
             file.write("</td>\n<td>")
             file.write(self.__returnLocationElement(trUsed[i]).text)

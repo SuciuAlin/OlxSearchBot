@@ -1,8 +1,8 @@
 nu merge pe categoria de auto si masini
 merge pe electronice
 
-category = mama-si-copilul/carucioare-si-patuturi
-searchedItem = carucior
+category = electronice-si-electrocasnice
+searchedItem = dell xps
 priceFrom = 2000
 priceTo = 30000
 currency = RON
