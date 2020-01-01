@@ -1,0 +1,5 @@
+category = electronice-si-electrocasnice
+searchedItem = dell xps
+priceFrom = 2000
+priceTo = 30000
+currency = RON
