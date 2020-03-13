@@ -1,8 +1,8 @@
-# Description
+# Olx Search Bot
 
-Application that shows you the new orders if any appeared on the site or it tells it is the same. It automates the process of constantly searching for the better deal and refreshing the page even if nothing new appears so it saves a lot of time.
+Application that shows you the new deals that appears on the site since your last search. It automates the process of constantly searching for the better deal and refreshing the page even if nothing new appears so it saves a lot of time.
 
-# Demo
+## Demo
 
 ```python
 "coming soon"
