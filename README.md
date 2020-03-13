@@ -4,9 +4,10 @@ Application that shows you the new deals that appears on the site since your las
 
 ## Demo
 
-```python
-"coming soon"
-```
+For [new deals](https://recordit.co/UX3n89CCxO/)
+
+For list [already up to date](https://recordit.co/2V1KeGjnvd)
+
 ## Installation
 
 Use this link to download the appropriate version for your chrome browser  [https://chromedriver.chromium.org/downloads](https://chromedriver.chromium.org/downloads) 
