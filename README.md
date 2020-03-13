@@ -11,6 +11,17 @@ Application that shows you the new deals that appears on the site since your las
 
 Use this link to download the appropriate version for your chrome browser  [https://chromedriver.chromium.org/downloads](https://chromedriver.chromium.org/downloads) 
 
+## Configure
+
+The file config.txt contanins default settings.
+Change them for your neeeds.
+```txt
+category = electronice-si-electrocasnice (the name of the category in the url of the site)
+searchedItem = asus (the item you would type on the searchbar)
+priceFrom = 2000 
+priceTo = 3000
+currency = RON ( RON / EUR )
+```
 
 ## The idea behind this app
 
